@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import CategoryGridTile from "../components/CategoryGridTile";
 import { MEALS, CATEGORIES } from "../data/dummy-data";
 
-const MealsOverviewScreen = ({ route, navigation }) => {
+const FavouriteScreen = ({ route, navigation }) => {
   const { categoryId } = route.params;
   const meals = MEALS.filter((m) => m.categoryIds.includes(categoryId));
 
@@ -31,7 +31,7 @@ const MealsOverviewScreen = ({ route, navigation }) => {
   );
 };
 
-export default MealsOverviewScreen;
+export default FavouriteScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
