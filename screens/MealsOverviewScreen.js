@@ -1,16 +1,13 @@
 import { useLayoutEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import CategoryGridTile from "../components/CategoryGridTile";
 import { MEALS, CATEGORIES } from "../data/dummy-data";
+import MealItem from "../components/MealList/MealItem";
+import MealList from "../components/MealList";
 
 const MealsOverviewScreen = ({ route, navigation }) => {
   const { categoryId } = route.params;
   const meals = MEALS.filter((m) => m.categoryIds.includes(categoryId));
-
-  const renderMealItem = ({ item }) => (
-    <CategoryGridTile title={item.title} imageUrl={item.imageUrl} />
-  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -18,21 +15,7 @@ const MealsOverviewScreen = ({ route, navigation }) => {
     });
   }, [categoryId, navigation]);
 
-  return (
-    <View style={styles.container}>
-      <Text>Meals Overview Screen</Text>
-      <FlatList
-        data={meals}
-        keyExtractor={({ id }) => id}
-        renderItem={renderMealItem}
-        numColumns={2}
-      />
-    </View>
-  );
+  return <MealList data={meals} title="Meals Overview Screen" />;
 };
 
 export default MealsOverviewScreen;
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-});

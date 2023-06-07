@@ -1,38 +1,25 @@
-import { useLayoutEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { View } from "react-native";
+import { MEALS } from "../data/dummy-data";
+import MealList from "../components/MealList";
+import { useFavourites } from "../store/context/favourites";
 
-import CategoryGridTile from "../components/CategoryGridTile";
-import { MEALS, CATEGORIES } from "../data/dummy-data";
+const MealsOverviewScreen = () => {
+  const { ids } = useFavourites();
+  const meals = MEALS.filter((m) => ids.includes(m.id));
 
-const FavouriteScreen = ({ route, navigation }) => {
-  const { categoryId } = route.params;
-  const meals = MEALS.filter((m) => m.categoryIds.includes(categoryId));
+  if (!meals.length)
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>No meal found</Text>
+      </View>
+    );
 
-  const renderMealItem = ({ item }) => (
-    <CategoryGridTile title={item.title} imageUrl={item.imageUrl} />
-  );
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: CATEGORIES.find((c) => c.id === categoryId)?.name || "Meals",
-    });
-  }, [categoryId, navigation]);
-
-  return (
-    <View style={styles.container}>
-      <Text>Meals Overview Screen</Text>
-      <FlatList
-        data={meals}
-        keyExtractor={({ id }) => id}
-        renderItem={renderMealItem}
-        numColumns={2}
-      />
-    </View>
-  );
+  return <MealList data={meals} title="Favourites" />;
 };
 
-export default FavouriteScreen;
+export default MealsOverviewScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  text: { fontSize: 18, fontWeight: "bold", color: "white" },
 });

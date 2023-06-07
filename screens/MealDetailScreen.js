@@ -6,21 +6,34 @@ import MealDetails from "../components/MealDetails";
 import SubTitle from "../components/Subtitle";
 import List from "../components/List";
 import IconButton from "../components/IconButton";
+import { useFavourites } from "../store/context/favourites";
 
 const MealDetailScreen = ({ route, navigation }) => {
+  const { ids, removeFavourite, addFavourite } = useFavourites();
+
   const { mealId } = route.params;
   const meal = MEALS.find((m) => m.id === mealId);
 
-  const handlePress = () => {};
+  const isFavourite = ids.includes(mealId);
+
+  const toggleFavourite = () => {
+    if (isFavourite) return removeFavourite(mealId);
+
+    return addFavourite(mealId);
+  };
 
   useLayoutEffect(
     () =>
       navigation.setOptions({
         headerRighe: () => (
-          <IconButton onPress={handlePress} icon="star" color="white" />
+          <IconButton
+            onPress={toggleFavourite}
+            icon={isFavourite ? "star" : "star-otline"}
+            color="white"
+          />
         ),
       }),
-    [navigation, handlePress]
+    [navigation, toggleFavourite]
   );
 
   return (
